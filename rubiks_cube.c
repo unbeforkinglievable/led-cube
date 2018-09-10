@@ -24,22 +24,22 @@ rubiks_init( rubiks_cube_t * cube )
     }
     memset( cube, 0, sizeof(*cube) );
 
-    for (uint8 i = CUBE_CELL_FRONT_CELL0; i <= CUBE_CELL_FRONT_CELL8; ++i) {
+    for (uint8_t i = CUBE_CELL_FRONT_CELL0; i <= CUBE_CELL_FRONT_CELL8; ++i) {
         cube->state[i] = RUBIKS_COLOR_WHITE;
     }
-    for (uint8 i = CUBE_CELL_BACK_CELL0; i <= CUBE_CELL_BACK_CELL8; ++i) {
+    for (uint8_t i = CUBE_CELL_BACK_CELL0; i <= CUBE_CELL_BACK_CELL8; ++i) {
         cube->state[i] = RUBIKS_COLOR_YELLOW;
     }
-    for (uint8 i = CUBE_CELL_RIGHT_CELL0; i <= CUBE_CELL_RIGHT_CELL8; ++i) {
+    for (uint8_t i = CUBE_CELL_RIGHT_CELL0; i <= CUBE_CELL_RIGHT_CELL8; ++i) {
         cube->state[i] = RUBIKS_COLOR_BLUE;
     }
-    for (uint8 i = CUBE_CELL_LEFT_CELL0; i <= CUBE_CELL_LEFT_CELL8; ++i) {
+    for (uint8_t i = CUBE_CELL_LEFT_CELL0; i <= CUBE_CELL_LEFT_CELL8; ++i) {
         cube->state[i] = RUBIKS_COLOR_GREEN;
     }
-    for (uint8 i = CUBE_CELL_TOP_CELL0; i <= CUBE_CELL_TOP_CELL8; ++i) {
+    for (uint8_t i = CUBE_CELL_TOP_CELL0; i <= CUBE_CELL_TOP_CELL8; ++i) {
         cube->state[i] = RUBIKS_COLOR_ORANGE;
     }
-    for (uint8 i = CUBE_CELL_BOTTOM_CELL0; i <= CUBE_CELL_BOTTOM_CELL8; ++i) {
+    for (uint8_t i = CUBE_CELL_BOTTOM_CELL0; i <= CUBE_CELL_BOTTOM_CELL8; ++i) {
         cube->state[i] = RUBIKS_COLOR_RED;
     }
 
@@ -66,7 +66,7 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
 
     case RUBIKS_ROTATION_FRONT_CCW:
         // front ccw is 3 cc rotations
-        for (uint8 i = 0; i < 3; ++i) {
+        for (uint8_t i = 0; i < 3; ++i) {
             status = rubiks_rotation_front_cc( cube );
             if (status != 0) {
                 break;
@@ -81,7 +81,7 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
 
     case RUBIKS_ROTATION_RIGHT_CCW:
         // right ccw is 3 cc rotations
-        for (uint8 i = 0; i < 3; ++i) {
+        for (uint8_t i = 0; i < 3; ++i) {
             status = rubiks_rotation_right_cc( cube );
             if (status != 0) {
                 break;
@@ -96,7 +96,7 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
 
     case RUBIKS_ROTATION_TOP_CCW:
         // top ccw is 3 cc rotations
-        for (uint8 i = 0; i < 3; ++i) {
+        for (uint8_t i = 0; i < 3; ++i) {
             status = rubiks_rotation_top_cc( cube );
             if (status != 0) {
                 break;
