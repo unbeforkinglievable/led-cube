@@ -77,7 +77,7 @@ plane_rotate( plane_t * plane, point4d_t const * const rotation_axis, float rota
     point4d_scale( &part1, &plane->x_axis, cos_angle );
     point4d_cross( &part2, &plane->x_axis, rotation_axis );
     point4d_scale( &part2, &part2, sin_angle );
-    point4d_dot( rotation_axis, &plane->x_axis, &dot_product );
+    point4d_dot( &dot_product, rotation_axis, &plane->x_axis );
     point4d_scale( &part3, rotation_axis, dot_product * (1 - cos_angle) );
 
     point4d_add( &part1, &part1, &part2 );
@@ -88,7 +88,7 @@ plane_rotate( plane_t * plane, point4d_t const * const rotation_axis, float rota
     point4d_scale( &part1, &plane->y_axis, cos_angle );
     point4d_cross( &part2, &plane->y_axis, rotation_axis );
     point4d_scale( &part2, &part2, sin_angle );
-    point4d_dot( rotation_axis, &plane->y_axis, &dot_product );
+    point4d_dot( &dot_product, rotation_axis, &plane->y_axis );
     point4d_scale( &part3, rotation_axis, dot_product * (1 - cos_angle) );
 
     point4d_add( &part1, &part1, &part2 );

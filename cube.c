@@ -91,8 +91,8 @@ cube_colorize( cube_t * cube, plane_t * plane, gradient_t * gradient )
     for (uint8_t i = 0; i < CUBE_NCELLS; ++i) {
         plane_project( plane, &cube->cubies[i].point, &projection );
         point4d_normalize( &projection, &projection );
-        point4d_dot( &projection, &plane->x_axis, &angle_from_x );
-        point4d_dot( &projection, &plane->y_axis, &angle_from_y );
+        point4d_dot( &angle_from_x, &projection, &plane->x_axis );
+        point4d_dot( &angle_from_y, &projection, &plane->y_axis );
 
         angle_from_x = acos( angle_from_x );
         angle_from_y = acos( angle_from_y );
