@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "rubiks_cube.h"
+#include "random.h"
 
 static int16_t
 rubiks_rotate_front_cc( rubiks_cube_t * cube );
@@ -43,7 +44,7 @@ rubiks_init( rubiks_cube_t * cube )
     }
 
     // FIXME: we should probably seed the rng in a parent application instead
-    srand( 0 );
+    random_seed( 0 );
 
     return 0;
 }
@@ -119,10 +120,10 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
 int16_t
 rubiks_scramble( rubiks_cube_t * cube )
 {
-    for (uint8_t i = 0; i < 12 + (rand() % 12); ++i) {
-        for (uint8_t j = 0; j < 3 + (rand() % 3); ++j) {
+    for (uint8_t i = 0; i < 12 + (random_int( 12 )); ++i) {
+        for (uint8_t j = 0; j < 3 + (rand_int( 4 )); ++j) {
             // do something other than a flip
-            rubiks_rotate( cube, random_get_int( 0, RUBIKS_ROTATION_FLIP - 1 ) );
+            rubiks_rotate( cube, random_int( RUBIKS_ROTATION_FLIP - 1 ) );
         }
         // move to the back side
         rubiks_rotate( cube, RUBIKS_ROTATION_FLIP );
