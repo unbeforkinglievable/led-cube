@@ -3,6 +3,9 @@
 
 #include "cube.h"
 
+/**
+   @brief these are the colors on a rubiks cube
+ */
 typedef enum {
     RUBIKS_COLOR_WHITE,
     RUBIKS_COLOR_RED,

@@ -1,21 +1,62 @@
+//-----------------------------------------------
+// Includes
+//-----------------------------------------------
 #include <string.h>
 #include <stdlib.h>
 
 #include "rubiks_cube.h"
 #include "random.h"
 
+//-----------------------------------------------
+// Defines
+//-----------------------------------------------
+
+//-----------------------------------------------
+// Types
+//-----------------------------------------------
+
+//-----------------------------------------------
+// Local method declarations
+//-----------------------------------------------
+
+/**
+   @brief rotate the front face clockwise
+   @note  use this 3x for a counter-clockwise rotation
+   @note  4x should result in the original orientation
+ */
 static int16_t
 rubiks_rotate_front_cc( rubiks_cube_t * cube );
 
+/**
+   @brief rotate the right face clockwise
+   @note  use this 3x for a counter-clockwise rotation
+   @note  4x should result in the original orientation
+ */
 static int16_t
 rubiks_rotate_right_cc( rubiks_cube_t * cube );
 
+/**
+   @brief rotate the top face clockwise
+   @note  use this 3x for a counter-clockwise rotation
+   @note  4x should result in the original orientation
+ */
 static int16_t
 rubiks_rotate_top_cc( rubiks_cube_t * cube );
 
+/**
+   @brief flip the cube 180deg from the top 0, right 0, front 0 to the bottom 0, left 0, back 0
+   @note  two flips should result in the same original orientation
+ */
 static int16_t
 rubiks_flip( rubiks_cube_t * cube );
 
+//-----------------------------------------------
+// Local data
+//-----------------------------------------------
+
+//-----------------------------------------------
+// Global method definitions
+//-----------------------------------------------
 int16_t
 rubiks_init( rubiks_cube_t * cube )
 {
@@ -132,6 +173,9 @@ rubiks_scramble( rubiks_cube_t * cube )
     return 0;
 }
 
+//-----------------------------------------------
+// Local method definitions
+//-----------------------------------------------
 static int16_t
 rubiks_rotate_front_cc( rubiks_cube_t * cube )
 {
