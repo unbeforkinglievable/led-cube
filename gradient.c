@@ -62,7 +62,7 @@ gradient_interpolate( gradient_t const * const gradient, float location, point4d
     // first entry must be at 0.0
     // last entry must be at 1.0
     if ((ABS( gradient->entries[0].location ) > 0.001) ||
-        (ABS( gradient->entries[gradient->num_entries].location - 1.0) > 0.001)) {
+        (ABS( gradient->entries[gradient->num_entries].location - 1.0 ) > 0.001)) {
         return -2;
     }
 
