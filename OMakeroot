@@ -1,0 +1,19 @@
+########################################################################
+# The OMakeroot file.
+
+#
+# Include the configuration files.
+#
+open build/C
+open build/LaTeX
+
+#
+# The command-line variables are defined *after* the
+# standard configuration has been loaded.
+#
+DefineCommandVars()
+
+#
+# Include the OMakefile in this directory.
+#
+.SUBDIRS: .

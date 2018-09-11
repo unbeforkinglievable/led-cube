@@ -1,0 +1,18 @@
+.PHONY: all clean arduino-tests posix-tests
+.DEFAULT: all
+
+BUILD_ROOT = build
+
+all: arduino-tests posix-tests
+
+arduino-tests: $(BUILD_ROOT)
+    $(echo "arduino-tests not implemented")
+
+posix-tests: $(BUILD_ROOT)
+    $(echo "posix-tests not implemented")
+
+$(BUILD_ROOT):
+    mkdir -p $(BUILD_ROOT)
+
+clean:
+    rm -rf $(BUILD_ROOT)
