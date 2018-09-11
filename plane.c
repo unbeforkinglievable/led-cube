@@ -11,9 +11,9 @@ plane_init( plane_t * plane )
     }
 
     memset( plane, 0, sizeof(*plane) );
-    plane->x_axis.e[POINT4D_X] = 1.0;
-    plane->y_axis.e[POINT4D_Y] = 1.0;
-    plane->normal.e[POINT4D_Z] = 1.0;
+    plane->x_axis.v.x = 1.0;
+    plane->y_axis.v.y = 1.0;
+    plane->normal.v.z = 1.0;
     return 0;
 }
 

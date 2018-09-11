@@ -22,13 +22,10 @@ point4d_cross( point4d_t * result, point4d_t const * const v1, point4d_t const *
         return -1;
     }
 
-    result->e[POINT4D_X] = ((v1->e[POINT4D_Y] * v2->e[POINT4D_Z]) -
-                            (v1->e[POINT4D_Z] * v2->e[POINT4D_Y]));
-    result->e[POINT4D_Y] = ((v1->e[POINT4D_Z] * v2->e[POINT4D_X]) -
-                            (v1->e[POINT4D_X] * v2->e[POINT4D_Z]));
-    result->e[POINT4D_Z] = ((v1->e[POINT4D_X] * v2->e[POINT4D_Y]) -
-                            (v1->e[POINT4D_Y] * v2->e[POINT4D_Z]));
-    result->e[POINT4D_W] = 0;
+    result->v.x = ((v1->v.y * v2->v.z) - (v1->v.z * v2->v.y));
+    result->v.y = ((v1->v.z * v2->v.x) - (v1->v.x * v2->v.z));
+    result->v.z = ((v1->v.x * v2->v.y) - (v1->v.y * v2->v.x));
+    result->v.w = 0;
 
     return 0;
 }

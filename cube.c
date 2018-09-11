@@ -30,39 +30,39 @@ cube_init( cube_t * cube )
         for (uint8_t j = 0; j < 3; ++j) {
             // FRONT face
             point = &cube->cubies[CUBE_CELL_FRONT_CELL0 + 3*i + j].point
-            point->e[POINT4D_X] = 3;
-            point->e[POINT4D_Y] = 2 - 2*i;
-            point->e[POINT4D_Z] = 2 - 2*j;
+            point->v.x = 3;
+            point->v.y = 2 - 2*i;
+            point->v.z = 2 - 2*j;
 
             // TOP face
             point = &cube->cubies[CUBE_CELL_TOP_CELL0 + 3*i + j].point;
-            point->e[POINT4D_X] = 2 - 2*i;
-            point->e[POINT4D_Y] = 2 - 2*j;
-            point->e[POINT4D_Z] = 3;
+            point->v.x = 2 - 2*i;
+            point->v.y = 2 - 2*j;
+            point->v.z = 3;
 
             // RIGHT face
             point = &cube->cubies[CUBE_CELL_RIGHT_CELL0 + 3*i + j].point;
-            point->e[POINT4D_X] = 2 - 2*j;
-            point->e[POINT4D_Y] = 3;
-            point->e[POINT4D_Z] = 2 - 2*i;
+            point->v.x = 2 - 2*j;
+            point->v.y = 3;
+            point->v.z = 2 - 2*i;
 
             // BACK face
             point = &cube->cubies[CUBE_CELL_BACK_CELL0 + 3*i + j].point
-            point->e[POINT4D_X] = -3;
-            point->e[POINT4D_Y] = -2 + 2*i;
-            point->e[POINT4D_Z] = -2 + 2*j;
+            point->v.x = -3;
+            point->v.y = -2 + 2*i;
+            point->v.z = -2 + 2*j;
 
             // BOTTOM face
             point = &cube->cubies[CUBE_CELL_BOTTOM_CELL0 + 3*i + j].point;
-            point->e[POINT4D_X] = -2 + 2*i;
-            point->e[POINT4D_Y] = -2 + 2*j;
-            point->e[POINT4D_Z] = -3;
+            point->v.x = -2 + 2*i;
+            point->v.y = -2 + 2*j;
+            point->v.z = -3;
 
             // LEFT face
             point = &cube->cubies[CUBE_CELL_LEFT_CELL0 + 3*i + j].point;
-            point->e[POINT4D_X] = -2 + 2*j;
-            point->e[POINT4D_Y] = -3;
-            point->e[POINT4D_Z] = -2 + 2*i;
+            point->v.x = -2 + 2*j;
+            point->v.y = -3;
+            point->v.z = -2 + 2*i;
         }
     }
 
