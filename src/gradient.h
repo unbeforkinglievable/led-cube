@@ -1,10 +1,19 @@
 #ifndef __GRADIENT_H__
 #define __GRADIENT_H__
 
+//-----------------------------------------------
+// Includes
+//-----------------------------------------------
 #include "point4d.h"
 
+//-----------------------------------------------
+// Defines
+//-----------------------------------------------
 #define GRADIENT_MAX_NENTRIES 32
 
+//-----------------------------------------------
+// Types
+//-----------------------------------------------
 typedef struct {
     float location;
     point4d_t point;
@@ -14,6 +23,10 @@ typedef struct {
     uint8_t num_entries;
     gradient_entry_t entries[GRADIENT_MAX_NENTRIES];
 } gradient_t;
+
+//-----------------------------------------------
+// Global method declarations
+//-----------------------------------------------
 
 /**
    @brief initialize a gradient object

@@ -1,7 +1,18 @@
 #ifndef __RUBIKS_CUBE_H__
 #define __RUBIKS_CUBE_H__
 
+//-----------------------------------------------
+// Includes
+//-----------------------------------------------
 #include "cube.h"
+
+//-----------------------------------------------
+// Defines
+//-----------------------------------------------
+
+//-----------------------------------------------
+// Types
+//-----------------------------------------------
 
 /**
    @brief these are the colors on a rubiks cube
@@ -30,6 +41,10 @@ typedef enum {
 typedef struct {
     rubiks_color_t state[CUBE_NCELLS];
 } rubiks_cube_t;
+
+//-----------------------------------------------
+// Global method declarations
+//-----------------------------------------------
 
 /**
    @brief initialize the cube to the default solved state

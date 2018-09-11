@@ -1,14 +1,44 @@
 #ifndef __PLANE_H__
 #define __PLANE_H__
 
+//-----------------------------------------------
+// Includes
+//-----------------------------------------------
 #include "point4d.h"
 
+//-----------------------------------------------
+// Defines
+//-----------------------------------------------
+
+//-----------------------------------------------
+// Types
+//-----------------------------------------------
+
+/**
+   @brief a plane needs 3 points to define it.
+
+   I'm chosing to represent the three points as:
+   1) a translation from the global origin 0,0,0
+   2) a unit vector away from the translation point indicating the "X" axis
+   3) a unit vector away from the translation point indication the "Y" axis, perpendicular to "X"
+
+   The normal (x cross y) is also stored here so we have it as it's used in projection
+   computations and is quite useful.
+
+   The x, y, z (normal) and translation are really then a coordinate frame and might make sense
+   to represent as a translation vector and a rotation matrix.  This representation
+   might change in the future, but it meets my needs for now.
+ */
 typedef struct {
     point4d_t x_axis;
     point4d_t y_axis;
     point4d_t normal;
     point4d_t translation;
 } plane_t;
+
+//-----------------------------------------------
+// Global method declarations
+//-----------------------------------------------
 
 /**
    @brief
