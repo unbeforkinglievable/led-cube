@@ -8,10 +8,10 @@ BUILD_ROOT = build
 all: arduino posix
 
 arduino: $(BUILD_ROOT)
-    $(echo "arduino-tests not implemented")
+    $(echo "arduino not implemented")
 
 posix: $(BUILD_ROOT)
-    $(echo "posix-tests not implemented")
+    $(echo "posix not implemented")
 
 $(BUILD_ROOT):
     mkdir -p $(BUILD_ROOT)
