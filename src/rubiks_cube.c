@@ -108,7 +108,7 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
     case RUBIKS_ROTATION_FRONT_CCW:
         // front ccw is 3 cc rotations
         for (uint8_t i = 0; i < 3; ++i) {
-            status = rubiks_rotation_front_cc( cube );
+            status = rubiks_rotate_front_cc( cube );
             if (status != 0) {
                 break;
             }
@@ -117,13 +117,13 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
 
     case RUBIKS_ROTATION_RIGHT_CC:
         // right cc
-        status = rubiks_rotation_right_cc( cube );
+        status = rubiks_rotate_right_cc( cube );
         break;
 
     case RUBIKS_ROTATION_RIGHT_CCW:
         // right ccw is 3 cc rotations
         for (uint8_t i = 0; i < 3; ++i) {
-            status = rubiks_rotation_right_cc( cube );
+            status = rubiks_rotate_right_cc( cube );
             if (status != 0) {
                 break;
             }
@@ -132,13 +132,13 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
 
     case RUBIKS_ROTATION_TOP_CC:
         // top cc
-        status = rubiks_rotation_top_cc( cube );
+        status = rubiks_rotate_top_cc( cube );
         break;
 
     case RUBIKS_ROTATION_TOP_CCW:
         // top ccw is 3 cc rotations
         for (uint8_t i = 0; i < 3; ++i) {
-            status = rubiks_rotation_top_cc( cube );
+            status = rubiks_rotate_top_cc( cube );
             if (status != 0) {
                 break;
             }
@@ -162,7 +162,7 @@ int16_t
 rubiks_scramble( rubiks_cube_t * cube )
 {
     for (uint8_t i = 0; i < 12 + (random_int( 12 )); ++i) {
-        for (uint8_t j = 0; j < 3 + (rand_int( 4 )); ++j) {
+        for (uint8_t j = 0; j < 3 + (random_int( 4 )); ++j) {
             // do something other than a flip
             rubiks_rotate( cube, random_int( RUBIKS_ROTATION_FLIP - 1 ) );
         }

@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "plane.h"
+#include "macros.h"
 
 //-----------------------------------------------
 // Defines

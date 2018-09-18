@@ -4,6 +4,7 @@
 #include <string.h>
 #include <math.h>
 
+#include "macros.h"
 #include "cube.h"
 
 //-----------------------------------------------
@@ -40,7 +41,7 @@ cube_init( cube_t * cube )
     for (uint8_t i = 0; i < 3; ++i) {
         for (uint8_t j = 0; j < 3; ++j) {
             // FRONT face
-            point = &cube->cells[CUBE_CELL_FRONT_CELL0 + 3*i + j].point
+            point = &cube->cells[CUBE_CELL_FRONT_CELL0 + 3*i + j].point;
             point->v.x = 3;
             point->v.y = 2 - 2*i;
             point->v.z = 2 - 2*j;
@@ -58,7 +59,7 @@ cube_init( cube_t * cube )
             point->v.z = 2 - 2*i;
 
             // BACK face
-            point = &cube->cells[CUBE_CELL_BACK_CELL0 + 3*i + j].point
+            point = &cube->cells[CUBE_CELL_BACK_CELL0 + 3*i + j].point;
             point->v.x = -3;
             point->v.y = -2 + 2*i;
             point->v.z = -2 + 2*j;
@@ -81,7 +82,7 @@ cube_init( cube_t * cube )
 }
 
 int16_t
-cube_colorize( cube_t * cube, plane_t * plane, gradient_t * gradient )
+cube_colorize( cube_t * cube, plane_t const * const plane, gradient_t const * const gradient )
 {
 
     point4d_t projection;
@@ -110,7 +111,7 @@ cube_colorize( cube_t * cube, plane_t * plane, gradient_t * gradient )
         location = angle_from_x / (2 * M_PI);
 
         // use the location to find the color we want to apply
-        gradient_interpoate( gradient, location, &cube->cells[i].color );
+        gradient_interpolate( gradient, location, &cube->cells[i].color );
     }
 
     return 0;

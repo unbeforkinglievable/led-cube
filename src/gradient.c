@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "gradient.h"
+#include "macros.h"
 
 //-----------------------------------------------
 // Defines
@@ -84,13 +85,13 @@ gradient_interpolate( gradient_t const * const gradient, float location, point4d
     // first entry must be at 0.0
     // last entry must be at 1.0
     if ((ABS( gradient->entries[0].location ) > 0.001) ||
-        (ABS( gradient->entries[gradient->num_entries].location - 1.0 ) > 0.001)) {
+        (ABS( gradient->entries[gradient->num_entries - 1].location - 1.0 ) > 0.001)) {
         return -2;
     }
 
     // if the location is less than 0, just take the value at the first point
     if (location < 0) {
-        memcpy( point, &gadient->entries[0].point, sizeof(*point) );
+        memcpy( point, &gradient->entries[0].point, sizeof(*point) );
         return 0;
     }
 
@@ -113,8 +114,8 @@ gradient_interpolate( gradient_t const * const gradient, float location, point4d
     weight = ((gradient->entries[index].location - location) /
               (gradient->entries[index].location - gradient->entries[index - 1].location));
 
-    point4d_scale( &scaled[0], gradient->entries[index].point, weight );
-    point4d_scale( &scaled[1], gradient->entries[index - 1].point, 1.0 - weight );
+    point4d_scale( &scaled[0], &gradient->entries[index].point, weight );
+    point4d_scale( &scaled[1], &gradient->entries[index - 1].point, 1.0 - weight );
     point4d_add( point, &scaled[0], &scaled[1] );
 
     return 0;

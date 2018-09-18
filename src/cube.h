@@ -5,8 +5,8 @@
 // Includes
 //-----------------------------------------------
 #include "point4d.h"
+#include "gradient.h"
 #include "plane.h"
-#include "rubiks_cube.h"
 
 //-----------------------------------------------
 // Defines

@@ -3,18 +3,48 @@
 
 .SUBDIRS: test
 
-BUILD_ROOT = build
+BUILD_DIR = build
+SRC_DIR = src
+TARGETS = led
+SOURCES = cube gradient plane point4d random rubiks_cube main
+ABS_SRC_DIR=$(absname $(SRC_DIR))
+INCLUDES = $(addprefix -I, $(ABS_SRC_DIR))
+
+CC=gcc
+LD=gcc
+CFLAGS = -Wall -Os $(INCLUDES) -DDEBUGGING=1
+LDFLAGS = -lc -lm -lglut
+
+POSIX_OBJ_DIR = $(BUILD_DIR)/obj
+ARDUINO_OBJ_DIR = $(BUILD_DIR)/ino
+BIN_DIR = $(BUILD_DIR)/bin
+
+CFILES = $(addsuffix .c, $(SOURCES))
+SRC_CFILES = $(addprefix $(SRC_DIR)/, $(CFILES))
+POSIX_OFILES = $(addprefix $(POSIX_OBJ_DIR)/, $(addsuffix .o, $(SOURCES)))
+
+POSIX_TARGETS=$(addprefix $(BIN_DIR)/, $(addsuffix .posix.exe, $(TARGETS)))
 
 all: arduino posix
 
-arduino: $(BUILD_ROOT)
-    $(echo "arduino not implemented")
+arduino:
+    $(echo "arduino target not implemented")
 
-posix: $(BUILD_ROOT)
-    $(echo "posix not implemented")
+section
+    CFLAGS += -D__POSIX_TARGET__
+    posix: $(POSIX_TARGETS)
+    SOURCES.foreach(source)
+        $(POSIX_OBJ_DIR)/$(source).o: $(SRC_DIR)/$(source).c $(POSIX_OBJ_DIR)
+            $(echo "Building $(POSIX_OBJ_DIR)/$(source).o")
+            $(CC) -c $(SRC_DIR)/$(source).c -o $(POSIX_OBJ_DIR)/$(source).o $(CFLAGS)
 
-$(BUILD_ROOT):
-    mkdir -p $(BUILD_ROOT)
+    TARGETS.foreach(target)
+        $(BIN_DIR)/$(target).posix.exe: $(POSIX_OFILES) $(BIN_DIR)
+            $(echo "Building $(BIN_DIR)/$(target).posix.exe")
+            $(LD) $(POSIX_OFILES) -o $(BIN_DIR)/$(target).posix.exe $(LDFLAGS)
+
+$(ARDUINO_OBJ_DIR) $(POSIX_OBJ_DIR) $(BIN_DIR):
+    mkdir -p $(POSIX_OBJ_DIR) $(ARDUINO_OBJ_DIR) $(BIN_DIR)
 
 clean:
-    rm -rf $(BUILD_ROOT)
+    rm -rf $(BUILD_DIR)
