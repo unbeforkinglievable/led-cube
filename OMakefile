@@ -6,14 +6,14 @@
 BUILD_DIR = build
 SRC_DIR = src
 TARGETS = led
-SOURCES = cube gradient plane point4d random rubiks_cube main
+SOURCES = cube gradient plane point4d random rubiks_cube visualizer app main
 ABS_SRC_DIR=$(absname $(SRC_DIR))
 INCLUDES = $(addprefix -I, $(ABS_SRC_DIR))
 
 CC=gcc
 LD=gcc
 CFLAGS = -Wall -Os $(INCLUDES) -DDEBUGGING=1
-LDFLAGS = -lc -lm -lglut
+LDFLAGS = -lc
 
 POSIX_OBJ_DIR = $(BUILD_DIR)/obj
 ARDUINO_OBJ_DIR = $(BUILD_DIR)/ino
@@ -32,6 +32,7 @@ arduino:
 
 section
     CFLAGS += -D__POSIX_TARGET__
+    LDFLAGS += -lm -lglfw -lGLU -lGL -lGLEW -lglut -lXi -lXmu -lpthread
     posix: $(POSIX_TARGETS)
     SOURCES.foreach(source)
         $(POSIX_OBJ_DIR)/$(source).o: $(SRC_DIR)/$(source).c $(POSIX_OBJ_DIR)
