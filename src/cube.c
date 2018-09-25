@@ -99,6 +99,11 @@ cube_colorize( cube_t * cube, plane_t const * const plane, gradient_t const * co
         point4d_dot( &angle_from_x, &projection, &plane->x_axis );
         point4d_dot( &angle_from_y, &projection, &plane->y_axis );
 
+        // FIXME: the cosine of an angle is already between -1 and 1.
+        // We should just take
+        // angle_from_x = (angle_from_x * 0.5) + 0.5
+        // angle_from_y = (angle_from_y * 0.5) + 0.5
+        // and save ourself some inverse trig functions
         angle_from_x = acos( angle_from_x );
         angle_from_y = acos( angle_from_y );
 

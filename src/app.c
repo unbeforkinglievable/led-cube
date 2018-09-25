@@ -17,9 +17,6 @@
 // Local method declarations
 //-----------------------------------------------
 static int16_t
-app_platform_init( void );
-
-static int16_t
 app_init_gradient( void );
 
 //-----------------------------------------------
@@ -36,6 +33,8 @@ app_init( void )
 {
     // seed the random number generator
     random_seed( 0 );
+
+    memset( &g_app, 0, sizeof(g_app) );
 
     app_init_gradient();
 
@@ -55,23 +54,7 @@ app_init( void )
     visualizer_init();
     visualizer_visualize( &g_app.cube );
 
-    app_platform_init();
-    g_app.running = 1;
-
     return 0;
-}
-
-int16_t
-app_is_running( void )
-{
-    return g_app.running;
-}
-
-void
-app_cleanup( void )
-{
-    DBG( "closing the visualizer" );
-    visualizer_close();
 }
 
 int16_t
@@ -79,9 +62,53 @@ app_service( void )
 {
     static uint16_t counter = 0;
 
-    plane_rotate( &g_app.plane, &g_app.rotation_axis, APP_DFLT_ROTATION_STEP );
-    cube_colorize( &g_app.cube, &g_app.plane, &g_app.gradient );
-    DBG( "requesting visualize" );
+    if (g_app.rubiks_mode) {
+        // FIXME: we should run an inactivity timer that gets
+        // kicked when we do rubiks cube rotations
+
+        // we want to colorize the cube based on the rubiks cube
+        for (uint8_t i = 0; i < CUBE_NCELLS; ++i) {
+            switch (g_app.rubiks_cube.state[i]) {
+            case RUBIKS_COLOR_WHITE:
+                g_app.cube.cells[i].color.v.x = 0;
+                g_app.cube.cells[i].color.v.y = 0;
+                g_app.cube.cells[i].color.v.z = 0;
+                break;
+            case RUBIKS_COLOR_RED:
+                g_app.cube.cells[i].color.v.x = 1;
+                g_app.cube.cells[i].color.v.y = 0;
+                g_app.cube.cells[i].color.v.z = 0;
+                break;
+            case RUBIKS_COLOR_GREEN:
+                g_app.cube.cells[i].color.v.x = 0;
+                g_app.cube.cells[i].color.v.y = 1;
+                g_app.cube.cells[i].color.v.z = 0;
+                break;
+            case RUBIKS_COLOR_YELLOW:
+                g_app.cube.cells[i].color.v.x = 1;
+                g_app.cube.cells[i].color.v.y = 1;
+                g_app.cube.cells[i].color.v.z = 0;
+                break;
+            case RUBIKS_COLOR_ORANGE:
+                g_app.cube.cells[i].color.v.x = 1;
+                g_app.cube.cells[i].color.v.y = 0.67;
+                g_app.cube.cells[i].color.v.z = 0;
+                break;
+            case RUBIKS_COLOR_BLUE:
+                g_app.cube.cells[i].color.v.x = 0;
+                g_app.cube.cells[i].color.v.y = 0;
+                g_app.cube.cells[i].color.v.z = 1;
+                break;
+            default:
+                // why did you do this to me?
+                break;
+            }
+        }
+    }
+    else {
+        plane_rotate( &g_app.plane, &g_app.rotation_axis, APP_DFLT_ROTATION_STEP );
+        cube_colorize( &g_app.cube, &g_app.plane, &g_app.gradient );
+    }
     visualizer_visualize( &g_app.cube );
 
     counter += 1;
@@ -165,11 +192,3 @@ app_init_gradient( void )
 
     return 0;
 }
-
-#if defined(__POSIX_TARGET__)
-#include "app_posix.c"
-#elif defined(__ARDUINO_TARGET__)
-#include "app_arduino.c"
-#else
-#error unhandled target
-#endif

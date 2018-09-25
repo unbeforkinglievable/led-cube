@@ -1,26 +1,7 @@
-//-----------------------------------------------
-// Includes
-//-----------------------------------------------
-#include "app.h"
-
-//-----------------------------------------------
-// Main
-//-----------------------------------------------
-int
-main( int argc, char ** argv )
-{
-
-    DBG( "Initializing the app" );
-    app_init();
-
-    DBG( "Starting app mainloop" );
-    while (app_is_running()) {
-        app_service();
-    }
-
-    DBG( "Cleaning up the app" );
-    app_cleanup();
-
-    DBG( "Goodbye" );
-    return 0;
-}
+#if defined(__ARDUINO_TARGET__)
+#include "main_arduino.c"
+#elif defined(__POSIX_TARGET__)
+#include "main_posix.c"
+#else
+#error unhandled target
+#endif

@@ -6,6 +6,7 @@
 
 #include "rubiks_cube.h"
 #include "random.h"
+#include "macros.h"
 
 //-----------------------------------------------
 // Defines
@@ -100,7 +101,7 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
     }
 
     switch (rotation) {
-    case RUBIKS_ROTATION_FRONT_CC:
+    case RUBIKS_ROTATION_FRONT_CW:
         // front cc
         status = rubiks_rotate_front_cc( cube );
         break;
@@ -115,7 +116,7 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
         }
         break;
 
-    case RUBIKS_ROTATION_RIGHT_CC:
+    case RUBIKS_ROTATION_RIGHT_CW:
         // right cc
         status = rubiks_rotate_right_cc( cube );
         break;
@@ -130,7 +131,7 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
         }
         break;
 
-    case RUBIKS_ROTATION_TOP_CC:
+    case RUBIKS_ROTATION_TOP_CW:
         // top cc
         status = rubiks_rotate_top_cc( cube );
         break;
@@ -161,12 +162,16 @@ rubiks_rotate( rubiks_cube_t * cube, rubiks_rotation_t rotation )
 int16_t
 rubiks_scramble( rubiks_cube_t * cube )
 {
+    uint8_t random_value;
     for (uint8_t i = 0; i < 12 + (random_int( 12 )); ++i) {
         for (uint8_t j = 0; j < 3 + (random_int( 4 )); ++j) {
             // do something other than a flip
-            rubiks_rotate( cube, random_int( RUBIKS_ROTATION_FLIP - 1 ) );
+            random_value = random_int( RUBIKS_ROTATION_FLIP - 1 );
+            DBG( "rotating: %d", random_value );
+            rubiks_rotate( cube, random_value );
         }
         // move to the back side
+        DBG( "flipping cube" );
         rubiks_rotate( cube, RUBIKS_ROTATION_FLIP );
     }
 

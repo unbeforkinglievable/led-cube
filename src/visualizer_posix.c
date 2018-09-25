@@ -6,33 +6,11 @@
 #include <GL/glut.h>
 #include <GL/freeglut.h>
 
-#include <pthread.h>
-#include <stdbool.h>
 #include <string.h>
 
-#include "app.h"
+#include "cube.h"
 
-//-----------------------------------------------
-// Local method declarations
-//-----------------------------------------------
-static void *
-visualizer_opengl_thread( void * data );
-
-static void
-visualizer_display_callback( void );
-
-static void
-visualizer_special_key_callback( int key, int x, int y );
-
-//-----------------------------------------------
-// Local data
-//-----------------------------------------------
-static pthread_t g_opengl_thread;
-static int32_t   g_window_id;
-static int32_t   g_running;
-static bool      g_has_cube;
-static cube_t    g_cube;
-static pthread_mutex_t g_lock;
+#define XFER(_x) ((3 + (_x)) / 12.0)
 
 //-----------------------------------------------
 // "global"-er method definitions
@@ -40,130 +18,73 @@ static pthread_mutex_t g_lock;
 static int16_t
 visualizer_platform_init( void )
 {
-    DBG( "initializing color buffer" );
-
-    g_running = true;
-    g_has_cube = false;
-    pthread_mutex_init( &g_lock, NULL );
-    pthread_create( &g_opengl_thread, NULL, visualizer_opengl_thread, NULL );
-
     return 0;
 }
 
 static int16_t
 visualizer_platform_visualize( cube_t * cube )
 {
-    DBG( "requesting redisplay" );
-
-    pthread_mutex_lock( &g_lock );
-    memcpy( &g_cube, cube, sizeof(*cube) );
-    g_has_cube = true;
-    pthread_mutex_unlock( &g_lock );
-
-    return 0;
-}
-
-static int16_t
-visualizer_platform_close( void )
-{
-    DBG( "setting flag to stop GL thread" );
-    g_running = false;
-    DBG( "waiting for GL thread to stop" );
-    pthread_join( g_opengl_thread, NULL );
-    DBG( "GL thread stopped" );
-
-    return 0;
-}
-
-//-----------------------------------------------
-// Local method definitions
-//-----------------------------------------------
-static void *
-visualizer_opengl_thread( void * data )
-{
-    (void) data;
-
-    char *argv[1] = {"Visualizer"};
-    int argc=1;
-    glutInit( &argc, argv );
-
-    glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
-
-    g_window_id = glutCreateWindow( "cube" );
-
-    glEnable( GL_DEPTH_TEST );
-    glutDisplayFunc( visualizer_display_callback );
-    glutSpecialFunc( visualizer_special_key_callback );
-    glutIdleFunc( visualizer_display_callback );
-
-    glutSetOption( GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION );
-    glutMainLoop();
-
-    g_app.running = false;
-    return NULL;
-}
-
-static void
-visualizer_display_callback( void )
-{
-    // check if the user is trying to quit...
-    if (!g_running) {
-        glutDestroyWindow( g_window_id );
-    }
-
-    // check if we have data to display
-    if (!g_has_cube) {
-        return;
-    }
-
-    // check if user is trying to update data
-    if (pthread_mutex_trylock( &g_lock ) != 0) {
-        return;
-    }
-
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    // FIXME: actually draw each cell
-    (void)g_cube;
+    point4d_t * point;
+    uint8_t face_axis;
+    uint8_t other_axis[2];
+    point4d_t square_corner;
+    point4d_t * color;
 
-    // FIXME: this is placeholder code
-    glBegin( GL_POLYGON );
-    glVertex3f( -1, -1, -1 );
-    glVertex3f( -1, 1, -1 );
-    glVertex3f( 1, 1, -1 );
-    glVertex3f( 1, -1, -1 );
-    glEnd();
+    for (uint8_t i = 0; i < CUBE_NCELLS; ++i) {
+        point = &cube->cells[i].point;
+        color = &cube->cells[i].color;
+        memcpy( &square_corner, point, sizeof(square_corner) );
 
-    pthread_mutex_unlock( &g_lock );
-}
+        if (ABS( ABS( point->v.x ) - 3.0 ) < 0.01) {
+            face_axis = POINT4D_X;
+            other_axis[0] = POINT4D_Y;
+            other_axis[1] = POINT4D_Z;
+        }
+        else if (ABS( ABS( point->v.y ) - 3.0 ) < 0.01) {
+            face_axis = POINT4D_Y;
+            other_axis[0] = POINT4D_X;
+            other_axis[1] = POINT4D_Z;
+        }
+        else {
+            face_axis = POINT4D_Z;
+            other_axis[0] = POINT4D_X;
+            other_axis[1] = POINT4D_Y;
+        }
 
-static void
-visualizer_special_key_callback( int key, int x, int y )
-{
-    DBG( "you pressed %d, %d, %d", key, x, y );
-    switch (key) {
-    case 'T':
-        // top ccw
-        break;
-    case 't':
-        // top cw
-        break;
-    case 'F':
-        // front ccw
-        break;
-    case 'f':
-        // front cw
-        break;
-    case 'r':
-        // right ccw
-        break;
-    case 'R':
-        // right cw
-        break;
-    case ' ':
-        // flip
-        break;
-    default:
-        break;
+        // Begin Square
+        glBegin( GL_POLYGON );
+        square_corner.e[face_axis] = point->e[face_axis];
+        // point 0
+        square_corner.e[other_axis[0]] = point->e[other_axis[0]] - 0.9;
+        square_corner.e[other_axis[1]] = point->e[other_axis[1]] - 0.9;
+        glColor3f( color->v.x, color->v.y, color->v.z );
+        glVertex3f( XFER(square_corner.v.x), XFER(square_corner.v.y), XFER(square_corner.v.z) );
+
+        // point 1
+        square_corner.e[other_axis[0]] = point->e[other_axis[0]] - 0.9;
+        square_corner.e[other_axis[1]] = point->e[other_axis[1]] + 0.9;
+        glColor3f( color->v.x, color->v.y, color->v.z );
+        glVertex3f( XFER(square_corner.v.x), XFER(square_corner.v.y), XFER(square_corner.v.z) );
+
+        // point 2
+        square_corner.e[other_axis[0]] = point->e[other_axis[0]] + 0.9;
+        square_corner.e[other_axis[1]] = point->e[other_axis[1]] + 0.9;
+        glColor3f( color->v.x, color->v.y, color->v.z );
+        glVertex3f( XFER(square_corner.v.x), XFER(square_corner.v.y), XFER(square_corner.v.z) );
+
+        // point 3
+        square_corner.e[other_axis[0]] = point->e[other_axis[0]] + 0.9;
+        square_corner.e[other_axis[1]] = point->e[other_axis[1]] - 0.9;
+        glColor3f( color->v.x, color->v.y, color->v.z );
+        glVertex3f( XFER(square_corner.v.x), XFER(square_corner.v.y), XFER(square_corner.v.z) );
+
+        glEnd();
+        // End Square
     }
+
+    glFlush();
+
+    return 0;
 }
